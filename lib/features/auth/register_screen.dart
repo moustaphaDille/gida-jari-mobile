@@ -9,10 +9,8 @@ import '../../../shared/widgets/gj_auth_scaffold.dart';
 
 enum _AccountKind { client, partenaire }
 
-/// Écran d'inscription — première étape : Client ou Partenaire (travailleur
-/// autonome du BTP : Artisan, Architecte/Ingénieur). Si "Partenaire" est
-/// choisi, l'étape suivante précise la spécialité (réutilise
-/// ProfileSelectionScreen, déjà scopée à Artisan/Architecte).
+/// Écran d'inscription — première étape : Client ou Partenaire.
+/// La profession du partenaire est choisie dans le formulaire d'inscription.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -31,8 +29,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
     } else if (_selected == _AccountKind.partenaire) {
       Navigator.of(context).pushNamed(
-        AppRoutes.profileSelection,
-        arguments: OnboardingCategory.independentProfessional,
+        AppRoutes.phoneNumber,
+        arguments: ProfileType.artisan,
       );
     }
   }
@@ -43,10 +41,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+           Center(
+            child: Container(
+              width: 84,
+              height: 84,
+              padding: const EdgeInsets.all(AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlueBg,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Image.asset(
+                  'assets/gida-jari.jpeg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
           const AuthTitleBlock(
             title: 'Choisissez votre profil',
-            subtitle: 'Sélectionnez le type de compte qui correspond le mieux '
-                'à vos besoins sur la plateforme Gida Jari.',
+            subtitle: 'La profession partenaire sera choisie à l’étape suivante.',
           ),
           _AccountKindCard(
             title: 'Client',

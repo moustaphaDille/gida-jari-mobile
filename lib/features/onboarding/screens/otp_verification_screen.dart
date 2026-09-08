@@ -54,15 +54,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void _onCodeChanged(String code) {
     setState(() {
       _code = code;
-      if (_hasError)
+      if (_hasError) {
         _hasError = false; // on efface l'erreur dès que l'utilisateur corrige
+      }
     });
   }
 
   Future<void> _verify() async {
     if (_code.length != 4 || _isVerifying) return;
     setState(() => _isVerifying = true);
-    // TODO: appel API Spring Boot — POST /api/auth/otp/verify { phone, code }
+   
     await Future.delayed(const Duration(milliseconds: 500));
     final isValid = _code.length == 4; // simulation locale
 
@@ -122,7 +123,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         children: [
           AuthIconAvatar(
             icon: Icons.lock_outline_rounded,
-            background: color.withOpacity(0.12),
+            background: color.withValues(alpha: 0.12),
             iconColor: color,
           ),
           AuthTitleBlock(
@@ -167,7 +168,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ? () {
                       setState(() => _hasError = false);
                       _startTimer();
-                      // TODO: renvoyer le SMS
+                      
                     }
                   : null,
               child: Text(

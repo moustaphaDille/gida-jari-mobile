@@ -51,7 +51,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         children: [
           AuthIconAvatar(
             icon: Icons.phone_iphone_rounded,
-            background: color.withOpacity(0.12),
+            background: color.withValues(alpha: 0.12),
             iconColor: color,
           ),
           const AuthTitleBlock(
@@ -86,10 +86,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            Row(
+            const Row(
               children: [
-                const Icon(Icons.lock_outline, size: 16, color: AppColors.successGreen),
-                const SizedBox(width: 6),
+                Icon(Icons.lock_outline, size: 16, color: AppColors.successGreen),
+                SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     'Votre numéro est sécurisé et ne sera jamais partagé',

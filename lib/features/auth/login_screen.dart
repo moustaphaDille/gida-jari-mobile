@@ -6,10 +6,6 @@ import '../../../core/theme/app_text_styles.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/gj_auth_scaffold.dart';
 
-/// Écran de connexion — pour les utilisateurs déjà inscrits. La création
-/// de compte reste pilotée par OTP SMS (cf. RegisterScreen) ; cet écran
-/// sert au retour d'un utilisateur ayant déjà défini un mot de passe
-/// (portail professionnel / API Spring Security).
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -149,11 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          TextButton(
-            onPressed: () {},
-            child: const Text('Politique de confidentialité et conditions'),
-          ),
+          //const SizedBox(height: AppSpacing.sm),
+       
         ],
       ),
     );

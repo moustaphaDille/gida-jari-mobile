@@ -11,8 +11,7 @@ import '../../features/onboarding/screens/profile_selection_screen.dart';
 import '../../features/onboarding/screens/phone_number_screen.dart';
 import '../../features/onboarding/screens/otp_verification_screen.dart';
 import '../../features/client/screens/client_dashboard_screen.dart';
-import '../../features/artisan/screens/artisan_dashboard_screen.dart';
-import '../../features/architecte/screens/architecte_dashboard_screen.dart';
+import '../../features/partner/screens/partner_dashboard_screen.dart';
 
 /// Noms de routes centralisés — évite les chaînes de caractères éparpillées.
 class AppRoutes {
@@ -31,9 +30,7 @@ class AppRoutes {
   static const registration = '/auth/registration';
   static const clientDashboard = '/client/dashboard';
 
-  static const artisanDashboard = '/artisan/dashboard';
-
-  static const architecteDashboard = '/architecte/dashboard';
+  static const partnerDashboard = '/partner/dashboard';
 }
 
 class AppRouter {
@@ -78,11 +75,8 @@ class AppRouter {
       case AppRoutes.clientDashboard:
         return _page(const ClientDashboardScreen(), fullscreenDialog: false);
 
-      case AppRoutes.artisanDashboard:
-        return _page(const ArtisanDashboardScreen());
-
-      case AppRoutes.architecteDashboard:
-        return _page(const ArchitecteDashboardScreen());
+      case AppRoutes.partnerDashboard:
+        return _page(const PartnerDashboardScreen());
 
       default:
         return _page(Scaffold(
