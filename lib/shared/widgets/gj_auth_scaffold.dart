@@ -9,16 +9,19 @@ import '../../core/theme/app_theme.dart';
 class GjAuthScaffold extends StatelessWidget {
   final Widget child;
   final bool showBrandHeader;
+  final PreferredSizeWidget? appBar;
 
   const GjAuthScaffold({
     super.key,
     required this.child,
     this.showBrandHeader = true,
+    this.appBar,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar,
       backgroundColor: AppColors.surfaceLight,
       body: SafeArea(
         child: SingleChildScrollView(

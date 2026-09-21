@@ -46,6 +46,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   Widget build(BuildContext context) {
     final color = widget.profileType.color;
     return GjAuthScaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, leading: const BackButton(),),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -79,7 +80,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     keyboardType: TextInputType.phone,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: AppTextStyles.labelStrong,
-                    decoration: const InputDecoration(hintText: '90 12 34 56'),
+                    decoration: const InputDecoration(hintText: '9X XX XX XX', border: OutlineInputBorder()),
                     onChanged: _validate,
                   ),
                 ),

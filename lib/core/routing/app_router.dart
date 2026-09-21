@@ -53,12 +53,12 @@ class AppRouter {
       case AppRoutes.welcome:
         return _page(const WelcomeScreen());
 
-      case AppRoutes.categorySelection:
-        return _page(const CategorySelectionScreen());
+      // case AppRoutes.categorySelection:
+      //   return _page(const CategorySelectionScreen());
 
-      case AppRoutes.profileSelection:
-        final category = settings.arguments as OnboardingCategory;
-        return _page(ProfileSelectionScreen(category: category));
+      // case AppRoutes.profileSelection:
+      //   final category = settings.arguments as OnboardingCategory;
+      //   return _page(ProfileSelectionScreen(category: category));
 
       case AppRoutes.phoneNumber:
         final profileType = settings.arguments as ProfileType;
