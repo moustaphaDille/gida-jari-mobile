@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_theme.dart';
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_text_styles.dart';
+import '../../app/theme/app_theme.dart';
 
 /// Habillage commun des écrans d'authentification (Connexion, Inscription,
 /// OTP, Mot de passe oublié) : fond clair + carte blanche centrée avec

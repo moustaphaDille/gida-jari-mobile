@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_colors.dart';
+import '../../app/theme/app_colors.dart';
 
-/// Les 3 profils couverts par ce parcours mobile : Client (demandeur) et
-/// les deux profils de travailleurs autonomes (Artisan, Architecte/Ingénieur).
-/// Correspond à profile_type dans le MCD (table users, ENUM côté Spring/JPA).
-enum ProfileType { client, artisan, architecteIngenieur }
+/// Les 6 profils du cahier des charges : Client (demandeur), Artisan,
+/// Architecte/Ingénieur, Entreprise BTP, Fournisseur de matériaux,
+/// ONG/Institution.
+enum ProfileType {
+  client,
+  artisan,
+  architecteIngenieur,
+  entrepriseBtp,
+  fournisseurMateriaux,
+  ongInstitution,
+}
 
 extension ProfileTypeX on ProfileType {
   String get label {
@@ -15,6 +22,12 @@ extension ProfileTypeX on ProfileType {
         return 'Artisan';
       case ProfileType.architecteIngenieur:
         return 'Architecte / Ingénieur';
+      case ProfileType.entrepriseBtp:
+        return 'Entreprise BTP';
+      case ProfileType.fournisseurMateriaux:
+        return 'Fournisseur de matériaux';
+      case ProfileType.ongInstitution:
+        return 'ONG / Institution';
     }
   }
 
@@ -26,6 +39,12 @@ extension ProfileTypeX on ProfileType {
         return 'Je propose mes services sur les chantiers (maçon, plombier, électricien...)';
       case ProfileType.architecteIngenieur:
         return "Je conçois, je supervise, j'apporte mon expertise technique";
+      case ProfileType.entrepriseBtp:
+        return "Je dirige une structure qui exécute des chantiers dans leur globalité";
+      case ProfileType.fournisseurMateriaux:
+        return 'Je vends des matériaux de construction (ciment, fer, bois...)';
+      case ProfileType.ongInstitution:
+        return 'Je pilote des projets BTP d’intérêt collectif pour mon organisation';
     }
   }
 
@@ -37,6 +56,12 @@ extension ProfileTypeX on ProfileType {
         return AppColors.artisanColor;
       case ProfileType.architecteIngenieur:
         return AppColors.architecteColor;
+      case ProfileType.entrepriseBtp:
+        return AppColors.successGreen;
+      case ProfileType.fournisseurMateriaux:
+        return AppColors.goldAccent;
+      case ProfileType.ongInstitution:
+        return AppColors.precisionTeal;
     }
   }
 
@@ -48,6 +73,32 @@ extension ProfileTypeX on ProfileType {
         return Icons.construction_rounded;
       case ProfileType.architecteIngenieur:
         return Icons.architecture_rounded;
+      case ProfileType.entrepriseBtp:
+        return Icons.apartment_rounded;
+      case ProfileType.fournisseurMateriaux:
+        return Icons.storefront_rounded;
+      case ProfileType.ongInstitution:
+        return Icons.handshake_rounded;
+    }
+  }
+
+  /// Seuls les professionnels indépendants choisissent un métier précis
+  /// (Artisan ou Architecte/Ingénieur) via le dropdown de RegistrationScreen.
+  bool get isIndependentProfessional =>
+      this == ProfileType.artisan || this == ProfileType.architecteIngenieur;
+
+  /// Label du champ "nom de structure" affiché à la place du dropdown métier
+  /// pour Entreprise BTP / Fournisseur / ONG.
+  String? get structureFieldLabel {
+    switch (this) {
+      case ProfileType.entrepriseBtp:
+        return 'Raison sociale de l’entreprise';
+      case ProfileType.fournisseurMateriaux:
+        return 'Nom du commerce';
+      case ProfileType.ongInstitution:
+        return 'Nom de l’organisation';
+      default:
+        return null;
     }
   }
 }
@@ -99,16 +150,16 @@ extension UserBadgeX on UserBadge {
 }
 
 /// Modèle utilisateur minimal côté mobile — reflète les colonnes communes
-/// de la table `users` (superclasse) du MCD partagées par les 3 profils.
+/// de la table `users` (superclasse) du MCD partagées par les 6 profils.
 class UserProfile {
   final String id;
   final String phone;
   final ProfileType profileType;
   final String? fullName;
   final int kycLevel;
-  final int profileScore; // 0-100, cf. barème par profil
+  final int profileScore;
   final UserBadge badge;
-  final AvailabilityStatus? availability; // pertinent pour Artisan / Architecte
+  final AvailabilityStatus? availability;
   final double walletBalance;
 
   const UserProfile({

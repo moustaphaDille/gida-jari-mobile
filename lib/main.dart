@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'core/theme/app_theme.dart';
-import 'core/routing/app_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'app/theme/app_theme.dart';
+import 'app/routing/app_router.dart';
+
 
 void main() {
-  runApp(const GidaJariApp());
+  runApp(const ProviderScope(child: GidaJariApp()));
 }
 
 class GidaJariApp extends StatelessWidget {

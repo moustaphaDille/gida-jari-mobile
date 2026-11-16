@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../core/theme/app_colors.dart';
+import '../../app/theme/app_colors.dart';
 
-/// 4 cases OTP avec auto-focus et validation automatique au 4ème chiffre.
-/// Conforme à la spec : 64x64dp, shake animation si erreur, ne jamais
-/// effacer les chiffres saisis en cas d'erreur (permettre la correction).
+/// 6 cases OTP avec auto-focus et validation automatique au 6ème chiffre.
+/// Les cases s'adaptent à la largeur disponible pour rester visibles sur mobile.
+/// Les chiffres saisis sont conservés en cas d'erreur pour permettre la correction.
 class OtpInput extends StatefulWidget {
-  /// Appelé dès que le 4ème chiffre est saisi (auto-soumission).
+  /// Appelé dès que le 6ème chiffre est saisi (auto-soumission).
   final void Function(String code) onCompleted;
 
   /// Appelé à chaque frappe, avec le code partiel — utile pour activer/
@@ -29,8 +29,8 @@ class OtpInput extends StatefulWidget {
 class _OtpInputState extends State<OtpInput>
     with SingleTickerProviderStateMixin {
   final List<TextEditingController> _controllers =
-      List.generate(4, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
+      List.generate(6, (_) => TextEditingController());
+  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   late AnimationController _shakeController;
 
   @override
@@ -63,7 +63,7 @@ class _OtpInputState extends State<OtpInput>
   }
 
   void _onChanged(int index, String value) {
-    if (value.isNotEmpty && index < 3) {
+    if (value.isNotEmpty && index < 5) {
       _focusNodes[index + 1].requestFocus();
     }
     if (value.isEmpty && index > 0) {
@@ -71,7 +71,7 @@ class _OtpInputState extends State<OtpInput>
     }
     final code = _controllers.map((c) => c.text).join();
     widget.onChanged?.call(code);
-    if (code.length == 4) {
+    if (code.length == 6) {
       FocusScope.of(context).unfocus();
       widget.onCompleted(code);
     }
@@ -83,48 +83,61 @@ class _OtpInputState extends State<OtpInput>
       animation: _shakeController,
       builder: (context, child) {
         final t = _shakeController.value;
-        final offset = t == 0 ? 0.0 : (8 * (1 - t)) * ((t * 20).floor() % 2 == 0 ? 1 : -1);
+        final offset =
+            t == 0 ? 0.0 : (8 * (1 - t)) * ((t * 20).floor() % 2 == 0 ? 1 : -1);
         return Transform.translate(offset: Offset(offset, 0), child: child);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(4, (index) {
-          return SizedBox(
-            width: 64,
-            height: 64,
-            child: TextField(
-              controller: _controllers[index],
-              focusNode: _focusNodes[index],
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              maxLength: 1,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                counterText: '',
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: widget.hasError
-                        ? AppColors.errorRed
-                        : AppColors.borderNeutral,
-                    width: 2,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          const gap = 8.0;
+          final boxWidth = (constraints.maxWidth - (gap * 5)) / 6;
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(6, (index) {
+              return SizedBox(
+                width: boxWidth,
+                height: 56,
+                child: TextField(
+                  controller: _controllers[index],
+                  focusNode: _focusNodes[index],
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  maxLength: 1,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: AppColors.primaryBlue,
-                    width: 2,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: InputDecoration(
+                    counterText: '',
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: widget.hasError
+                            ? AppColors.errorRed
+                            : AppColors.borderNeutral,
+                        width: 2,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: AppColors.primaryBlue,
+                        width: 2,
+                      ),
+                    ),
                   ),
+                  onChanged: (value) => _onChanged(index, value),
                 ),
-              ),
-              onChanged: (value) => _onChanged(index, value),
-            ),
+              );
+            }),
           );
-        }),
+        },
       ),
     );
   }

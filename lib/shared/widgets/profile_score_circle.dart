@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_text_styles.dart';
 
 /// Cercle de progression animé du score de complétion de profil.
 /// Couleur adaptative : rouge < 40% / orange 40-70% / vert > 70%.
